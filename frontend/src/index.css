@@ -27,12 +27,17 @@ h1 {
   margin: 1.5rem 0 1rem;
 }
 
+h2 {
+  font-size: 1.15rem;
+  margin: 0 0 0.75rem;
+}
+
 a {
   color: var(--primary);
 }
 
 .container {
-  max-width: 760px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 0 1rem 3rem;
 }
@@ -69,6 +74,10 @@ a {
 
 .site-header nav a.active {
   background: rgba(255, 255, 255, 0.2);
+}
+
+.quote-form {
+  max-width: 640px;
 }
 
 .quote-form fieldset {
@@ -179,4 +188,270 @@ a {
 
 .btn-primary:hover:not(:disabled) {
   background: var(--primary-dark);
+}
+
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.btn-danger {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+
+.btn-danger-outline {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.page-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.page-heading h1 {
+  margin-bottom: 0.25rem;
+}
+
+.heading-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.muted {
+  color: var(--muted);
+  margin: 0 0 1rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.banner-success {
+  background: #e6f4ea;
+  color: #1b5e20;
+  border: 1px solid #1b5e20;
+}
+
+.banner-warning {
+  background: #fff4d6;
+  color: #6b4700;
+  border: 1px solid #c98a00;
+}
+
+.banner-warning ul {
+  margin: 0.25rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.quote-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.quote-table th,
+.quote-table td {
+  padding: 0.65rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.quote-table thead th {
+  background: #eaf1f5;
+  font-weight: 600;
+}
+
+.quote-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.quote-table tbody tr:hover {
+  background: #f7fafc;
+}
+
+.num {
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.per {
+  font-size: 0.8em;
+  color: var(--muted);
+}
+
+.row-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.link-button {
+  font: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--primary);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link-button.danger {
+  color: var(--danger);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.total-card {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.total-label {
+  margin: 0;
+  opacity: 0.9;
+}
+
+.total-amount {
+  margin: 0.25rem 0 0;
+  font-size: 2.25rem;
+  font-weight: 700;
+}
+
+.total-card .per {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.breakdown {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.breakdown th,
+.breakdown td {
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  font-weight: 400;
+}
+
+.breakdown tr:last-child th,
+.breakdown tr:last-child td {
+  border-bottom: none;
+}
+
+.row-detail {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.sub-row th {
+  padding-left: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.sub-row td {
+  font-size: 0.95rem;
+}
+
+.total-row th,
+.total-row td {
+  font-weight: 700;
+}
+
+.note-card {
+  background: #eaf4f8;
+  border-color: #9cc6d6;
+}
+
+.note-card p {
+  margin: 0;
+}
+
+.explanation {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.explanation li {
+  margin-bottom: 0.4rem;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.25rem;
+  margin: 0;
+}
+
+.details dt {
+  color: var(--muted);
+}
+
+.details dd {
+  margin: 0;
+}
+
+.notes {
+  white-space: pre-wrap;
+}
+
+.confirm-dialog {
+  max-width: 420px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.confirm-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 600px) {
+  .details {
+    grid-template-columns: 1fr;
+  }
+
+  .details dd {
+    margin-bottom: 0.5rem;
+  }
+
+  .total-amount {
+    font-size: 1.75rem;
+  }
 }
