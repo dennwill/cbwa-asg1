@@ -34,7 +34,8 @@ async function request(path = '', options = {}) {
   return body
 }
 
-export const listQuotes = () => request()
+export const listQuotes = (search = '') =>
+  request(search ? `?q=${encodeURIComponent(search)}` : '')
 export const getQuote = (id) => request(`/${id}`)
 export const createQuote = (data) => request('', { method: 'POST', body: JSON.stringify(data) })
 export const updateQuote = (id, data) =>

@@ -2,6 +2,8 @@ const express = require('express');
 const { validateQuote } = require('./validate');
 const { rowToQuote, quoteToParams, withCalculation, withSummary } = require('./quoteMapper');
 
+const MAX_SEARCH_LENGTH = 100;
+
 function createQuotesRouter(db) {
   const router = express.Router();
 
@@ -21,7 +23,11 @@ function createQuotesRouter(db) {
        payment_frequency = @payment_frequency, annual_discount = @annual_discount, notes = @notes
      WHERE id = @id`
   );
-  const selectAll = db.prepare('SELECT * FROM quotes ORDER BY id DESC');
+  const searchQuotes = db.prepare(
+    `SELECT * FROM quotes
+     WHERE customer_name LIKE @pattern ESCAPE '\\' OR notes LIKE @pattern ESCAPE '\\'
+     ORDER BY id DESC`
+  );
   const selectOne = db.prepare('SELECT * FROM quotes WHERE id = ?');
   const deleteOne = db.prepare('DELETE FROM quotes WHERE id = ?');
 
@@ -39,7 +45,15 @@ function createQuotesRouter(db) {
     res.status(400).json({ error: 'Validation failed.', details: errors });
 
   router.get('/', (req, res) => {
-    res.json(selectAll.all().map((row) => withSummary(rowToQuote(row))));
+    const { q = '' } = req.query;
+    if (typeof q !== 'string') {
+      return res.status(400).json({ error: 'Search term must be a single text value.' });
+    }
+
+    // user-typed % and _ must match literally rather than act as wildcards
+    const term = q.trim().slice(0, MAX_SEARCH_LENGTH).replace(/[\\%_]/g, '\\$&');
+    const rows = searchQuotes.all({ pattern: `%${term}%` });
+    res.json(rows.map((row) => withSummary(rowToQuote(row))));
   });
 
   router.get('/:id', (req, res) => {

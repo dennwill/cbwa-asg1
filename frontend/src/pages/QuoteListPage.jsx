@@ -4,6 +4,8 @@ import { ApiError, deleteQuote, listQuotes } from '../api'
 import ConfirmDialog from '../components/ConfirmDialog'
 import { formatDate, formatMoney } from '../format'
 
+const SEARCH_DELAY_MS = 300
+
 export default function QuoteListPage() {
   const location = useLocation()
   const [quotes, setQuotes] = useState(null)
@@ -11,16 +13,33 @@ export default function QuoteListPage() {
   const [notice, setNotice] = useState(location.state?.notice ?? '')
   const [toDelete, setToDelete] = useState(null)
   const [deleting, setDeleting] = useState(false)
+  const [search, setSearch] = useState('')
+  const [query, setQuery] = useState('')
+
+  // wait for a pause in typing before asking the server
+  useEffect(() => {
+    const timer = setTimeout(() => setQuery(search.trim()), SEARCH_DELAY_MS)
+    return () => clearTimeout(timer)
+  }, [search])
 
   useEffect(() => {
     let cancelled = false
-    listQuotes()
-      .then((data) => !cancelled && setQuotes(data))
+    listQuotes(query)
+      .then((data) => {
+        if (cancelled) return
+        setQuotes(data)
+        setError('')
+      })
       .catch((err) => !cancelled && setError(err.message))
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [query])
+
+  const clearSearch = () => {
+    setSearch('')
+    setQuery('')
+  }
 
   const handleDelete = async () => {
     setDeleting(true)
@@ -50,6 +69,25 @@ export default function QuoteListPage() {
         </Link>
       </div>
 
+      <div className="search-bar">
+        <label htmlFor="quote-search" className="visually-hidden">
+          Search quotes
+        </label>
+        <input
+          id="quote-search"
+          type="search"
+          value={search}
+          maxLength={100}
+          placeholder="Search by customer name or notes"
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        {search && (
+          <button type="button" className="btn" onClick={clearSearch}>
+            Clear
+          </button>
+        )}
+      </div>
+
       {notice && (
         <div className="banner banner-success" role="status">
           {notice}
@@ -63,7 +101,15 @@ export default function QuoteListPage() {
 
       {!quotes && !error && <p>Loading quotes...</p>}
 
-      {quotes && quotes.length === 0 && (
+      {quotes && query && (
+        <p className="muted search-summary" role="status">
+          {quotes.length === 0
+            ? `No quotes match “${query}”.`
+            : `${quotes.length} ${quotes.length === 1 ? 'quote' : 'quotes'} matching “${query}”`}
+        </p>
+      )}
+
+      {quotes && quotes.length === 0 && !query && (
         <div className="empty-state">
           <p>No quotes yet.</p>
           <Link to="/quotes/new">Create your first quote</Link>

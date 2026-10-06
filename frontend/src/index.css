@@ -6,6 +6,7 @@
   --border: #cfd9e0;
   --primary: #0b6e8a;
   --primary-dark: #08566d;
+  --header-bg: #12303d;
   --danger: #b3261e;
   --danger-bg: #fdecea;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -43,7 +44,7 @@ a {
 }
 
 .site-header {
-  background: var(--primary);
+  background: var(--header-bg);
   color: #fff;
 }
 
@@ -209,20 +210,24 @@ a {
 
 .page-heading {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
+  margin: 1.5rem 0 1rem;
 }
 
 .page-heading h1 {
-  margin-bottom: 0.25rem;
+  margin: 0 0 0.25rem;
+}
+
+.page-heading .muted {
+  margin: 0;
 }
 
 .heading-actions {
   display: flex;
   gap: 0.5rem;
-  margin-top: 1.5rem;
 }
 
 .muted {
@@ -454,4 +459,28 @@ a {
   .total-amount {
     font-size: 1.75rem;
   }
+}
+
+.search-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.55rem 0.75rem;
+  font: inherit;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.search-bar input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+.search-summary {
+  margin: 0 0 0.75rem;
 }

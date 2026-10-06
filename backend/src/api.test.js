@@ -205,3 +205,35 @@ test('database failure gives 500 without leaking details', async () => {
     { db }
   );
 });
+
+test('search matches customer name and notes, ignoring case', async () => {
+  await withServer(async (call) => {
+    await call('', 'POST', single);
+    await call('', 'POST', { ...benchmark, notes: 'Section 7 example' });
+
+    const names = async (q) => (await call(`?q=${encodeURIComponent(q)}`)).body.map((x) => x.customerName);
+    assert.deepEqual(await names('jane'), ['Jane Citizen']);
+    assert.deepEqual(await names('  FAMILY '), ['Benchmark Family']);
+    assert.deepEqual(await names('section 7'), ['Benchmark Family']);
+    assert.deepEqual(await names('zzz'), []);
+    assert.equal((await names('')).length, 2);
+  });
+});
+
+test('search treats % and _ as plain characters', async () => {
+  await withServer(async (call) => {
+    await call('', 'POST', single);
+    await call('', 'POST', { ...single, customerName: '100% Sure_Thing' });
+
+    const names = async (q) => (await call(`?q=${encodeURIComponent(q)}`)).body.map((x) => x.customerName);
+    assert.deepEqual(await names('%'), ['100% Sure_Thing']);
+    assert.deepEqual(await names('_'), ['100% Sure_Thing']);
+    assert.deepEqual(await names(String.fromCharCode(92)), []);
+  });
+});
+
+test('repeated search parameters give 400', async () => {
+  await withServer(async (call) => {
+    assert.equal((await call('?q=a&q=b')).status, 400);
+  });
+});
